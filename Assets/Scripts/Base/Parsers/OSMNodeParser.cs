@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
+using Base.Items;
 using Base.Utilities;
 
-namespace Base.OSM
+namespace Base.Parsers
 {
     public class OSMNodeParser
     {

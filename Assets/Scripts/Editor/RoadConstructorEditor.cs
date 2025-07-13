@@ -1,6 +1,5 @@
 ﻿using Base;
 using Base.Builders;
-using Base.OSM;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,10 +9,10 @@ namespace Editor
     {
         private GameObject _targetParent;
         private Material _roadMaterial;
-        private string _customLabel;
+        private string _customLabel = "zurichSmall";
         private bool _isGenerateLineRenderers;
 
-        [MenuItem("Tools/OSM/Build Spline Road Network")]
+        [MenuItem("Tools/OSM/Build Spline Road")]
         public static void ShowWindow()
         {
             GetWindow<RoadConstructorEditor>("Spline Road Builder");
@@ -23,7 +22,7 @@ namespace Editor
         {
             GUILayout.Label("Spline Road Network Builder", EditorStyles.boldLabel);
 
-            _customLabel = EditorGUILayout.TextField("Label", _customLabel);
+            _customLabel = EditorGUILayout.TextField("Name OSM file", _customLabel);
             _isGenerateLineRenderers = EditorGUILayout.Toggle("Generate Line Renderers", _isGenerateLineRenderers);
             _targetParent = (GameObject)EditorGUILayout.ObjectField("Target Parent", _targetParent, typeof(GameObject), true);
             _roadMaterial = (Material)EditorGUILayout.ObjectField("Road Material", _roadMaterial, typeof(Material), false);

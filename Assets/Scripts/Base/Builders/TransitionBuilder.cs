@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Base.Items;
 using Base.Utilities;
 using Interfaces;
 using UnityEngine;
@@ -10,9 +10,9 @@ namespace Base.Builders
 {
     public class TransitionBuilder : ITransitionBuilder
     {
-        private readonly int _transitionSegments = 20;
-        private readonly List<SplineContainer> _splineContainers = new();
-
+        private const int TransitionSegments = 20;
+        private const string LaneName = "TransitionSpline_";
+        
         public void CreateTransitionCurveWithSpline(Road road, Dictionary<long, Node> nodes, Transform parent)
         {
             var roadNodes = road.NodeIds.Select(id => nodes[id]).ToList();
@@ -20,7 +20,7 @@ namespace Base.Builders
 
             for (int laneIndex = 0; laneIndex < lanes; laneIndex++)
             {
-                var splineContainer = CreateSplineContainer($"TransitionSpline_Lane{laneIndex}", parent);
+                var splineContainer = CreateSplineContainer(LaneName + $"{laneIndex}", parent);
                 var spline = splineContainer.Spline;
                 spline.Clear();
 
@@ -37,7 +37,7 @@ namespace Base.Builders
 
                     if (isIntersection)
                     {
-                        splineContainer = CreateSplineContainer($"TransitionSpline_Lane{laneIndex}", parent);
+                        splineContainer = CreateSplineContainer(LaneName + $"{laneIndex}", parent);
                         spline = splineContainer.Spline;
                         spline.Clear();
                         isIntersection = false;
@@ -61,11 +61,11 @@ namespace Base.Builders
             var c1 = Vector3.Lerp(start, center.Position, centerBias);
             var c2 = Vector3.Lerp(end, center.Position, centerBias);
 
-            var splineContainer = CreateSplineContainer($"TransitionSpline_{from.Id}_{to.Id}", parent);
+            var splineContainer = CreateSplineContainer(LaneName + $"{from.Id}_{to.Id}", parent);
             var spline = splineContainer.Spline;
             spline.Clear();
 
-            var positions = CalculateBezierPositions(start, c1, c2, end, _transitionSegments);
+            var positions = CalculateBezierPositions(start, c1, c2, end, TransitionSegments);
 
             foreach (var p in positions)
             {
@@ -92,7 +92,6 @@ namespace Base.Builders
             var go = new GameObject(name);
             go.transform.SetParent(parent, false);
             var splineContainer = go.AddComponent<SplineContainer>();
-            _splineContainers.Add(splineContainer);
             return splineContainer;
         }
     }

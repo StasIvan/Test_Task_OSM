@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Base;
-using Base.OSM;
+using Base.Items;
 
 namespace Interfaces
 {

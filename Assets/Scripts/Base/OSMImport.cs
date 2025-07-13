@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Xml;
 using System.Xml.Linq;
+using Base.Items;
+using Base.Parsers;
 using Base.Utilities;
 using Interfaces;
-using UnityEngine;
 
-namespace Base.OSM
+namespace Base
 {
     public class OSMImport : IOSMImportable
     {
         private const string OsmFilePath = "Assets/Resources/";
+        private const string ExtensionFile = ".osm";
         private readonly GeoConverter _geoConverter = new(47.3769, 8.5417);
         private readonly string _osmFileName;
 
@@ -22,7 +23,7 @@ namespace Base.OSM
         {
             var roads = new List<Road>();
 
-            var doc = XDocument.Load(OsmFilePath + _osmFileName + ".osm");
+            var doc = XDocument.Load(OsmFilePath + _osmFileName + ExtensionFile);
 
             var nodeParser = new OSMNodeParser(_geoConverter);
             nodeParser.ParseNodes(doc, out var nodes);

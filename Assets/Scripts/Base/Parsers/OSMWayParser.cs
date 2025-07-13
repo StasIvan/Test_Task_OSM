@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
+using Base.Items;
 using UnityEngine;
 
-namespace Base.OSM
+namespace Base.Parsers
 {
     public class OSMWayParser
     {
@@ -30,14 +30,7 @@ namespace Base.OSM
                 if (path.Count < 2)
                     continue;
 
-                // Read lane and oneway tags
                 int? lanes = ParseIntTag(way, "lanes");
-                int? lanesF = ParseIntTag(way, "lanes:forward");
-                int? lanesB = ParseIntTag(way, "lanes:backward");
-                bool isOneway = way.Elements("tag").
-                    Any(t => (string)t.Attribute("k") == "oneway" && new[] {"yes", "-1"}.Contains((string)t.Attribute("v")));
-
-                // Normalize direction: from south→north or west→east
                 var start = nodes[path.First()].Position;
                 var end = nodes[path.Last()].Position;
                 var delta = end - start;
@@ -47,7 +40,7 @@ namespace Base.OSM
                     path.Reverse();
                 }
 
-                roads.Add(new Road(path, lanes, lanesF, lanesB, isOneway));
+                roads.Add(new Road(path, lanes));
                 UpdateConnections(path, nodes);
             }
         }

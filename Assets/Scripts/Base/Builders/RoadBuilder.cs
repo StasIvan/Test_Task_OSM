@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Base.Items;
 using Interfaces;
 using UnityEngine;
 
@@ -72,7 +73,6 @@ namespace Base.Builders
 
                 LineNode lineNode = new LineNode
                 {
-                    LineNumber = lineNumber,
                     Id = node.Id,
                     Position = aOff
                 };
